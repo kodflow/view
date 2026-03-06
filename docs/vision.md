@@ -1,70 +1,62 @@
-# Vision: devcontainer-template
+# Vision: view
 
 ## Purpose
 
-A universal DevContainer shell that provides a complete AI ecosystem — specialist agents, slash commands, and automated workflows — to bootstrap and develop any project with maximum quality. The developer writes intent; the system produces reliable, idiomatic, up-to-date code.
+view est un outil de capture d'ecran a distance pour reseau local. Un serveur Go tourne sur macOS, capture l'ecran a la demande, et transmet les images en haute resolution a un client Go multiplateforme qui les affiche via une interface web embarquee.
 
 ## Problem Statement
 
-- Development environments lack deeply integrated AI that understands language-specific best practices
-- Workflows don't self-improve: the same mistakes repeat across projects
-- Generated code often follows outdated patterns instead of the latest stable version idioms
-- Solo developers waste time on boilerplate, tooling setup, and cross-referencing documentation
-- No feedback loop: code is produced without validation against official sources
+Acceder visuellement a l'ecran de son Mac depuis un PC Windows sur le meme reseau local, sans installer de logiciel lourd (VNC, TeamViewer), sans compte cloud, et sans exposer de service detectable par les scanners reseau.
 
 ## Target Users
 
-Solo developers who want to multiply their output by delegating to a reliable AI system that:
-- Produces production-quality code on first pass
-- Self-corrects when results don't meet standards
-- Cross-references multiple sources before committing to an approach
-- Stays current with the latest stable versions of every supported language
+- Usage personnel uniquement : 1 utilisateur, 2 machines (macOS + Windows)
+- Aucun multi-utilisateur prevu
 
 ## Goals
 
-1. **Reliability over speed** — Every output must be correct and idiomatic before it's fast
-2. **Self-correction** — Agents detect their own mistakes and iterate until quality criteria are met
-3. **Source cross-referencing** — Consult official docs (context7), web search, and codebase context before producing code
-4. **Latest best practices** — Agents target the current stable version of each language, not legacy patterns
-5. **Universal shell** — Zero opinion on the final project; all project types bootstrap from the same base
-6. **Deep reasoning** — Apply Peek, Decompose, Parallelize, Synthesize before complex actions
+1. Capturer l'ecran macOS en haute resolution (4K) sans notification visible
+2. Transmettre les captures au client via reseau local avec latence minimale
+3. Rester invisible aux scanners reseau (port standard, banniere factice)
+4. Client cross-platform testable sur macOS avant deploiement Windows
+5. Zero configuration : auto-discovery du serveur sur le reseau local
 
 ## Success Criteria
 
-| Criterion | Target |
-|-----------|--------|
-| Container startup | < 60s on cached rebuild |
-| Language support | Go, Python, Node.js, Rust, Elixir, Java, PHP, Ruby, Scala, Dart, C++, Carbon |
-| Specialist agents | 13 language + 5 executors + 2 orchestrators |
-| MCP servers | GitHub, Codacy, Playwright, context7, grepai pre-configured |
-| Code quality | Passes language-specific strict linting on first generation |
-| Self-correction | Agents retry with fixes when linting/tests fail |
-| Source validation | Agents consult context7 or official docs before generating non-trivial code |
+| Critere | Cible |
+|---------|-------|
+| Resolution capture | Native (Retina/4K) |
+| Latence capture-affichage | < 500ms en LAN |
+| Detection par nmap -sV | Identifie comme SSH, pas comme service custom |
+| Binaires | 2 binaires statiques (server macOS, client multi-OS) |
+| Setup | Zero config, auto-discovery mDNS/UDP broadcast |
+| Interface client | Web UI embarquee, ouvre le navigateur |
 
 ## Design Principles
 
-- **MCP-first** — Use structured MCP tools before CLI fallbacks; auth is pre-configured
-- **Reason then act** — Deep analysis before code generation; never guess when you can verify
-- **Fail forward** — When something breaks, auto-correct and learn; don't stop
-- **Progressive disclosure** — Basic info at root, details in subdirectories, full specs in agents
-- **Convention over configuration** — Sensible defaults that work out of the box
-- **Latest stable** — Always target the current stable version, never legacy
+- **Simplicite** : un binaire serveur, un binaire client, zero dependance externe
+- **Discretion reseau** : port 22 (ou standard), banniere SSH factice pour les connexions inconnues, magic bytes handshake pour le client legitime
+- **Cross-platform** : le client compile et fonctionne sur macOS et Windows sans modification
+- **Confiance locale** : pas d'authentification, le reseau local est le perimetre de securite
+- **Capture native** : utiliser les APIs macOS (screencapture CLI ou CoreGraphics) pour la meilleure qualite
 
 ## Non-Goals
 
-- Not a deployment platform (development environment only)
-- Not prescriptive about application architecture (the project decides)
-- Not a monorepo solution (single project focus)
-- Not a replacement for human judgment on design decisions
+- Streaming video temps reel (pseudo-streaming par captures rapides suffit)
+- Support multi-utilisateurs ou multi-serveurs
+- Authentification par mot de passe ou certificat
+- Fonctionnement hors reseau local (pas d'Internet/WAN)
+- Controle a distance (clavier/souris) - lecture seule uniquement
+- Interface GUI native (web UI embarquee suffit)
 
 ## Key Decisions
 
-| Decision | Rationale |
-|----------|-----------|
-| Ubuntu 24.04 base | LTS stability, widest package support |
-| Named volumes for caches | Persist tooling state across container rebuilds |
-| MCP-first integrations | Structured auth, no manual token handling |
-| Specialist agents per language | Each agent knows current stable version and idiomatic patterns |
-| RLM decomposition | Recursive Language Model pattern for reliable multi-step reasoning |
-| context7 + WebSearch | Cross-reference official docs before generating code |
-| Iterative self-correction | Agents validate output and retry until quality criteria are met |
+| Decision | Choix | Raison |
+|----------|-------|--------|
+| Langage | Go | Expertise existante, cross-compile trivial, binaires statiques |
+| Capture ecran | screencapture CLI / CoreGraphics | APIs macOS natives, pas de notification |
+| Transport | TCP sur port standard (22) | Invisible aux scanners, banniere SSH factice |
+| Discovery | mDNS ou UDP broadcast | Zero config, reseau local uniquement |
+| Interface client | Web UI embarquee (HTML/JS) | Cross-platform, pas de dep GUI |
+| Format image | PNG ou WebP | Qualite maximale, compression efficace |
+| Handshake | Magic bytes custom | Distingue client legitime des scanners |
