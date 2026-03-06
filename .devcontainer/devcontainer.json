@@ -14,7 +14,7 @@
     // "./features/languages/java": {},
     // "./features/languages/csharp": {},
     // "./features/languages/python": {},
-    // "./features/languages/go": {},
+    "./features/languages/go": {},
     // "./features/languages/rust": {},
     // "./features/languages/ruby": {},
     // "./features/languages/php": {},

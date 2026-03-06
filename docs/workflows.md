@@ -1,98 +1,79 @@
 # Development Workflows
 
-## Quick Reference
+## Setup
 
-| Task | Command |
-|------|---------|
-| Initialize project | `/init` |
-| New feature | `/feature <description>` |
-| Bug fix | `/fix <description>` |
-| Code review | `/review` |
-| Plan implementation | `/plan` |
-| Execute plan | `/do` |
-| Commit changes | `/git --commit` |
-| Run tests | `make test` or language-specific |
+### Prerequisites
 
-## Project Initialization
+- Go 1.25+ installe
+- macOS pour le serveur (capture d'ecran)
+- Make
 
-```
-/init → detect template → discovery conversation → generate docs → validate environment
+### Installation
+
+```bash
+git clone https://github.com/kodflow/view.git
+cd view
+make deps
 ```
 
-Run once after creating a project from this template. Produces vision, architecture, workflows, and agent configuration.
+## Development Loop
 
-## Feature Development
+```bash
+# 1. Editer le code dans src/
+# 2. Tester
+make test
 
+# 3. Builder le serveur (macOS)
+make build-server
+
+# 4. Builder le client (local)
+make build-client
+
+# 5. Lancer le serveur
+./bin/view-server
+
+# 6. Lancer le client (autre terminal)
+./bin/view-client
 ```
-/feature "add user auth" → plan → implement → /review → PR
+
+## Testing Strategy
+
+### Unit Tests
+
+- `src/internal/capture/` : mock de screencapture, test d'encodage
+- `src/internal/network/` : test du handshake, banniere SSH, protocole
+- `src/internal/discovery/` : test mDNS/broadcast avec loopback
+
+### Integration Tests
+
+- Serveur + client en loopback sur localhost
+- Test du cycle complet : discovery → connect → capture → display
+
+## Build
+
+### Binaires locaux
+
+```bash
+make build          # Build server + client pour l'OS courant
+make build-server   # Serveur uniquement
+make build-client   # Client uniquement
 ```
 
-1. Creates `feat/<desc>` branch
-2. Enters planning mode — analyzes codebase, designs approach
-3. Implement changes (agents consult context7 for latest best practices)
-4. `/review` runs 5 executor agents in parallel (correctness, security, design, quality, shell)
-5. PR created via MCP GitHub integration
+### Cross-compile
 
-## Bug Fixes
-
-```
-/fix "login timeout" → plan → implement → /review → PR
+```bash
+make build-all      # Tous les binaires
+# Produit :
+#   bin/view-server-darwin-arm64
+#   bin/view-client-darwin-arm64
+#   bin/view-client-windows-amd64.exe
 ```
 
-Same flow as features, uses `fix/` branch prefix and `fix(scope):` commits.
+## CI/CD
 
-## Code Review Pipeline
+### Pipeline
 
-`/review` triggers 5 parallel analysis passes:
-
-| Executor | Focus |
-|----------|-------|
-| Correctness | Invariants, state machines, off-by-one, concurrency |
-| Security | Taint analysis, OWASP Top 10, secrets, injection |
-| Design | Patterns, SOLID, DDD, antipatterns |
-| Quality | Complexity, code smells, maintainability |
-| Shell | Shell scripts, Dockerfiles, CI/CD safety |
-
-## Self-Correction Loop
-
-When agents detect issues:
-1. Generate code → run linting/tests
-2. If failure → analyze error → fix → retry
-3. Repeat until quality criteria are met
-4. If stuck after 3 attempts → escalate to user
-
-## Branch Conventions
-
-| Type | Branch | Commit |
-|------|--------|--------|
-| Feature | `feat/<desc>` | `feat(scope): message` |
-| Bug fix | `fix/<desc>` | `fix(scope): message` |
-
-## Pre-commit Checks
-
-Auto-detected by language marker:
-
-| Marker | Language | Checks |
-|--------|----------|--------|
-| `go.mod` | Go | golangci-lint, build, test -race |
-| `Cargo.toml` | Rust | clippy, build, test |
-| `package.json` | Node | lint, build, test |
-| `pyproject.toml` | Python | ruff, mypy, pytest |
-
-Priority: Makefile targets → Language-specific commands
-
-## Search Strategy
-
-1. **Semantic search**: `grepai_search` for meaning-based queries
-2. **Call graphs**: `grepai_trace_callers/callees` for impact analysis
-3. **Official docs**: context7 for library documentation
-4. **Fallback**: Grep for exact strings, regex patterns
-
-## Hooks
-
-| Hook | Action |
-|------|--------|
-| `pre-validate.sh` | Protect sensitive files |
-| `post-edit.sh` | Format + lint after edits |
-| `security.sh` | Secret detection |
-| `test.sh` | Run related tests |
+1. `make lint` — golangci-lint
+2. `make test` — go test avec race detector
+3. `make build-all` — cross-compilation
+4. Release — binaires attaches au tag GitHub
