@@ -1,6 +1,6 @@
-# view
+# devcontainer-template
 
-Outil de capture d'ecran macOS a distance via reseau local. Un serveur Go tourne sur Mac et capture l'ecran a la demande, un client Go multiplateforme affiche les captures en haute resolution (4K) via une interface web embarquee. Auto-discovery reseau, port stealth avec banniere SSH factice, zero configuration.
+Coquille DevContainer universelle fournissant un ecosysteme IA complet — 35 agents specialistes, 11 commandes slash, workflows auto-correctifs — pour bootstrapper et developper n'importe quel projet avec une qualite maximale. Fiabilite d'abord : les agents raisonnent en profondeur, recoupent les sources officielles, et s'auto-corrigent jusqu'a ce que le resultat respecte les standards.
 
 ## Installation Rapide
 
