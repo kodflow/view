@@ -1,284 +1,91 @@
-# Improve - Continuous Enhancement (RLM Multi-Agent)
-
-## Description
-
-Automatic continuous improvement. Detects context and acts.
-
-```
-/improve
-```
-
-**No arguments.** The skill auto-detects the mode.
-
+---
+name: improve
+description: Documentation QA for Design Patterns. Audits consistency, completeness, freshness.
+allowed-tools:
+  - "Read(**/*)"
+  - "Glob(**/*)"
+  - "Grep(**/*)"
+  - "Write(**/*)"
+  - "Edit(**/*)"
+  - "Task(*)"
+  - "WebSearch(*)"
+  - "WebFetch(*)"
 ---
 
-## Modes (Auto-detected)
+# /improve - Documentation QA
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                            /improve                                  │
-├──────────────────────────────┬──────────────────────────────────────┤
-│  kodflow/devcontainer-template│  Other project                      │
-│  ══════════════════════════════│══════════════════════════════════  │
-│                               │                                      │
-│  → Improve ~/.claude/docs/    │  → Analyze the code                  │
-│    ├─ Update best practices   │    ├─ Detect anti-patterns           │
-│    ├─ Fix inconsistencies     │    ├─ Compare with ~/.claude/docs/   │
-│    ├─ Refine examples         │    ├─ Find best practices            │
-│    └─ WebSearch validations   │    └─ Create issues on template      │
-│                               │                                      │
-│  Output: Modified files       │  Output: GitHub issues created       │
-└──────────────────────────────┴──────────────────────────────────────┘
-```
+$ARGUMENTS
 
----
+## Scope
 
-## RLM Workflow
+Target: `/workspace/.devcontainer/images/.claude/docs/`
 
-### Phase 1: Context detection
+## Options
 
-```yaml
-detection:
-  command: git remote get-url origin 2>/dev/null
-
-  rules:
-    - if: "contains 'kodflow/devcontainer-template'"
-      mode: "DOCS_IMPROVEMENT"
-      scope: "~/.claude/docs/**/*.md"
-      action: "Improve pattern documentation"
-
-    - else:
-      mode: "ANTI_PATTERN_DETECTION"
-      scope: "**/*.{md,ts,js,py,go,rs,java,rb,php}"
-      action: "Detect violations and create issues"
-      target: "github.com/kodflow/devcontainer-template/issues"
-```
-
----
-
-### Phase 2: Inventory (Partition)
-
-```yaml
-inventory:
-  mode_docs:
-    action: Glob("~/.claude/docs/**/*.md")
-    group_by: category (principles, creational, behavioral, etc.)
-
-  mode_antipattern:
-    action: |
-      Glob("**/*.md")
-      Glob("**/*.{ts,js,py,go,rs,java,rb,php}")
-    group_by: file_type
-```
-
----
-
-### Phase 3: Parallel agents (Map)
-
-**Launches 1 agent per file, max 20 in parallel.**
-
-```yaml
-parallel_execution:
-  max_agents: 20
-  model: haiku  # Fast
-
-  mode_docs:
-    prompt_per_file: |
-      FILE: {path}
-      CATEGORY: {category}
-
-      TASKS:
-      1. Read current content
-      2. Identify possible improvements:
-         - Outdated info
-         - Missing examples
-         - Inconsistencies
-      3. WebSearch "{pattern} best practices {current_year}"
-      4. Propose fixes
-
-      OUTPUT JSON:
-      {
-        "file": "{path}",
-        "status": "OK | UPDATE | OUTDATED",
-        "improvements": [{
-          "type": "content | example | fix",
-          "current": "...",
-          "proposed": "...",
-          "source": "url"
-        }]
-      }
-
-  mode_antipattern:
-    prompt_per_file: |
-      FILE: {path}
-      REFERENCE: ~/.claude/docs/
-
-      TASKS:
-      1. Read the code
-      2. Compare with documented patterns
-      3. Detect:
-         - Violations (anti-patterns)
-         - Missing patterns
-         - Best practices worth documenting
-
-      OUTPUT JSON:
-      {
-        "file": "{path}",
-        "violations": [{
-          "pattern": "name",
-          "severity": "HIGH | MEDIUM | LOW",
-          "description": "...",
-          "code": "...",
-          "fix": "..."
-        }],
-        "positive": [{
-          "description": "...",
-          "code": "...",
-          "worth_documenting": true
-        }]
-      }
-```
-
----
-
-### Phase 4: Validation (WebSearch)
-
-```yaml
-validation:
-  for_each_improvement:
-    search: "{pattern} best practices" (use current year dynamically)
-    sources:
-      - Official docs (go.dev, docs.python.org, etc.)
-      - martinfowler.com, refactoring.guru
-      - owasp.org (security)
-
-    confidence:
-      - 3+ sources: VALIDATED
-      - 2 sources: MEDIUM
-      - 1 source: LOW (flag)
-      - 0 source: SKIP
-```
-
----
-
-### Phase 5: Application
-
-```yaml
-application:
-  mode_docs:
-    action: |
-      FOR each VALIDATED improvement:
-        Edit(file, old, new)
-      Display modification summary
-
-  mode_antipattern:
-    action: |
-      FOR each HIGH/MEDIUM violation:
-        mcp__github__create_issue(
-          owner: "kodflow",
-          repo: "devcontainer-template",
-          title: "pattern: {description}",
-          body: "## Violation\n{details}\n## Code\n```\n{code}\n```\n## Fix\n{suggestion}",
-          labels: ["documentation", "improvement", "auto-generated"]
-        )
-
-      FOR each positive worth_documenting:
-        mcp__github__create_issue(
-          title: "new-pattern: {description}",
-          labels: ["new-pattern", "auto-generated"]
-        )
-
-      Display list of created issues
-```
-
----
-
-### Phase 6: Report
-
-```yaml
-report:
-  mode_docs:
-    output: |
-      ═══════════════════════════════════════════════
-        /improve - Documentation Enhancement Complete
-      ═══════════════════════════════════════════════
-
-        Files analyzed: {total}
-
-        Results:
-          ✓ OK: {ok}
-          ⚠ Updated: {updated}
-          ✗ Outdated: {outdated}
-
-        Changes applied: {changes}
-
-      ═══════════════════════════════════════════════
-
-  mode_antipattern:
-    output: |
-      ═══════════════════════════════════════════════
-        /improve - Anti-Pattern Detection Complete
-      ═══════════════════════════════════════════════
-
-        Repository: {repo}
-        Files analyzed: {total}
-
-        Violations:
-          🔴 HIGH: {high}
-          🟡 MEDIUM: {medium}
-          🟢 LOW: {low}
-
-        Positive patterns: {positive}
-
-        Issues created: {issues}
-          {issue_list}
-
-      ═══════════════════════════════════════════════
-```
-
----
-
-## Pattern categories (~/.claude/docs/)
-
-| Category | Scope |
-|----------|-------|
-| principles | SOLID, DRY, KISS, YAGNI |
-| creational | Factory, Builder, Singleton |
-| structural | Adapter, Decorator, Proxy |
-| behavioral | Observer, Strategy, Command |
-| performance | Cache, Lazy Load, Pool |
-| concurrency | Thread Pool, Actor, Mutex |
-| enterprise | PoEAA (Martin Fowler) |
-| messaging | EIP patterns |
-| ddd | Aggregate, Entity, Repository |
-| functional | Monad, Functor, Either |
-| architectural | Hexagonal, CQRS |
-| cloud | Circuit Breaker, Saga |
-| resilience | Retry, Timeout, Bulkhead |
-| security | OAuth, JWT, RBAC |
-| testing | Mock, Stub, Fixture |
-| devops | GitOps, IaC, Blue-Green |
-
----
-
-## Violation detection
-
-| Type | Description |
-|------|-------------|
-| SOLID_VIOLATION | God class, poor coupling |
-| DRY_VIOLATION | Duplicated code |
-| MISSING_PATTERN | Missing but needed pattern |
-| SECURITY | Vulnerabilities, hardcoded secrets |
-| PERFORMANCE | N+1, missing cache |
-| ERROR_HANDLING | Silent catch, missing retry |
-
----
-
-## Guardrails (ABSOLUTE)
-
-| Action | Status |
+| Option | Action |
 |--------|--------|
-| Modify without WebSearch validation | FORBIDDEN |
-| Create issue without code excerpt | FORBIDDEN |
-| Sequential agents (when parallelizable) | FORBIDDEN |
-| Issues on repo other than template | FORBIDDEN |
+| `--help` | Show help and stop |
+| `--check` | Audit without modifications (default) |
+| `--fix` | Auto-fix issues |
+| `--category <name>` | Audit specific category only |
+
+## Workflow
+
+1. **Inventory**: Glob `**/*.md` in docs root
+2. **Structure check**: Verify required sections per template
+3. **Consistency check**: Validate table formats, links, naming
+4. **Completeness check**: Compare against GoF, PoEAA, EIP catalogs
+5. **Freshness check**: WebSearch for current best practices
+
+## Required Sections
+
+Pattern files must have:
+- H1 title (`# Pattern Name`)
+- Description blockquote (`> ...`)
+- Go example (```go block)
+- "Quand utiliser" section
+- "Patterns liés" section
+
+README files must have:
+- Category H1 title
+- Pattern table
+- Decision table
+
+## Scoring
+
+| Grade | Score |
+|-------|-------|
+| A+ | 100% |
+| A | 90-99% |
+| B | 70-89% |
+| C | 50-69% |
+| F | <50% |
+
+## Output
+
+```
+/improve - Documentation Audit
+═════════════════════════════
+Scanned: {n} files in {n} categories
+
+Structure Issues:   {n}
+Consistency Issues: {n}
+Missing Patterns:   {n}
+
+Overall Score: {grade}
+═════════════════════════════
+```
+
+## Guardrails
+
+- Never delete files
+- Never modify without justification
+- Always use templates for new patterns:
+  - `TEMPLATE-PATTERN.md`
+  - `TEMPLATE-README.md`
+
+## Parallel Agents
+
+For full audits, use Task tool with:
+- `Explore` agent for structure/consistency
+- `general-purpose` agent for freshness validation
