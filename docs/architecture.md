@@ -13,7 +13,7 @@ Base image (Ubuntu 24.04 + core tooling)
         |
 Lifecycle hooks + language features
         |
-Claude Code + MCP servers (github, codacy, context7, grepai, playwright)
+Claude Code + MCP servers (github, context7, grepai, playwright)
         |
 Specialist agents (13 language + 5 executor + 8 devops)
 ```
@@ -69,7 +69,6 @@ User intent (slash command)
 | Service | Tool | Purpose |
 |---------|------|---------|
 | GitHub | `@modelcontextprotocol/server-github` | PR automation, code search |
-| Codacy | `@codacy/codacy-mcp` | Security and lint analysis |
 | context7 | `@upstash/context7-mcp` | Official library documentation |
 | Playwright | `@playwright/mcp` | Browser automation, E2E testing |
 | grepai | Local MCP | Semantic code search, call graphs |

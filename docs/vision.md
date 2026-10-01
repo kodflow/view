@@ -36,7 +36,7 @@ Solo developers who want to multiply their output by delegating to a reliable AI
 | Container startup | < 60s on cached rebuild |
 | Language support | Go, Python, Node.js, Rust, Elixir, Java, PHP, Ruby, Scala, Dart, C++, Carbon |
 | Specialist agents | 13 language + 5 executors + 2 orchestrators |
-| MCP servers | GitHub, Codacy, Playwright, context7, grepai pre-configured |
+| MCP servers | GitHub, Playwright, context7, grepai pre-configured |
 | Code quality | Passes language-specific strict linting on first generation |
 | Self-correction | Agents retry with fixes when linting/tests fail |
 | Source validation | Agents consult context7 or official docs before generating non-trivial code |
