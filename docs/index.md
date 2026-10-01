@@ -15,7 +15,7 @@
 | **79 agents IA** | Spécialistes par langage (26), DevOps (9), OS (22), orchestrateurs et exécuteurs — orchestrés par Claude Code |
 | **16 commandes** | `/plan`, `/do`, `/review`, `/git`, `/test`, `/lint`, `/docs`... couvrent tout le cycle de dev |
 | **Hooks automatiques** | Format, lint, tests, détection de secrets — déclenchés à chaque édition |
-| **6 serveurs MCP** | GitHub, GitLab, Codacy, Playwright, grepai, context7 — auth pré-configurée |
+| **5 serveurs MCP** | GitHub, GitLab, Playwright, grepai, context7 — auth pré-configurée |
 | **VPN intégré** | OpenVPN, WireGuard, IPsec, PPTP — connexion auto au démarrage |
 | **Secrets 1Password** | Gestion sécurisée via `/secret` avec convention vault-like |
 
@@ -33,7 +33,7 @@ flowchart LR
     A[VS Code] -->|"Reopen in Container"| B[DevContainer]
     B --> C[Base Image<br/>Ubuntu 24.04<br/>25 langages]
     C --> D[Claude Code<br/>79 agents<br/>16 commandes]
-    D --> E[MCP Servers<br/>GitHub, Codacy<br/>grepai, Playwright]
+    D --> E[MCP Servers<br/>GitHub<br/>grepai, Playwright]
     E --> F[Code produit<br/>testé, linté<br/>reviewé]
 ```
 

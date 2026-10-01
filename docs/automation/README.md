@@ -88,7 +88,6 @@ sequenceDiagram
 | **context7** | Documentation à jour des librairies (npm, Go, Rust...) | Aucune |
 | **GitHub** | Gestion des PRs, issues, branches via MCP | `GITHUB_TOKEN` |
 | **GitLab** | Gestion des MRs, pipelines via MCP | `GITLAB_TOKEN` |
-| **Codacy** | Analyse de qualité et sécurité du code | `CODACY_TOKEN` |
 | **Playwright** | Automatisation navigateur, tests E2E | Aucune |
 
 **Règle MCP-first** : les commandes utilisent toujours les outils MCP avant les CLI. Exemple : `/git --pr` utilise `mcp__github__create_pull_request` au lieu de `gh pr create`.

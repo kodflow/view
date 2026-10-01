@@ -114,7 +114,6 @@ Le template inclut des serveurs MCP pré-configurés pour Claude Code.
 | Serveur | Description |
 |---------|-------------|
 | **github** | Intégration GitHub |
-| **codacy** | Analyse de code |
 | **taskwarrior** | Gestion de tâches |
 
 ### Configuration des tokens
@@ -123,7 +122,6 @@ Le template inclut des serveurs MCP pré-configurés pour Claude Code.
 
 ```bash
 export GITHUB_API_TOKEN="ghp_xxx"
-export CODACY_API_TOKEN="xxx"
 ```
 
 **Option 2 : 1Password**
