@@ -144,3 +144,7 @@ plans/
 # ============================================
 .claude/logs/
 docs/site/
+
+# MCP configs can carry tokens: never tracked, at any depth.
+# Committed templates are named mcp.json.tmpl.
+.mcp.json
