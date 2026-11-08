@@ -8,7 +8,10 @@ language: "en-US"
 tone_instructions: "Evidence-based, concise, actionable. Prioritize: correctness, security, design, quality. Require concrete evidence for every finding. CRITICAL needs near-certainty. Omit speculative findings."
 early_access: true
 enable_free_tier: true
-inheritance: false
+# inheritance: true merges the central kodflow/coderabbit/.coderabbit.yaml under
+# this file: it carries the title keywords that keep the post-commit and
+# runner-template sync PRs out of review. Keys set here still win.
+inheritance: true
 
 # ─── Reviews ──────────────────────────────────────────────────────────────────
 
