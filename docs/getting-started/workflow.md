@@ -22,8 +22,6 @@ flowchart TD
     F -->|Oui| G["/review"]
     G --> H{Issues trouvées ?}
     H -->|Oui| E
-    H -->|Non| I["/git --commit"]
-    I --> J["/git --pr"]
 ```
 
 ## Nouvelle feature
@@ -41,11 +39,9 @@ flowchart TD
 /review
 
 # 5. Committer et créer la PR
-/git --commit
-/git --pr
 ```
 
-Claude crée automatiquement la branche `feat/add-jwt-auth`, commit au format conventionnel (`feat(auth): add JWT authentication`), et ouvre une PR.
+Committez sur une branche `feat/add-jwt-auth` au format conventionnel (`feat(auth): add JWT authentication`), puis ouvrez une PR.
 
 ## Corriger un bug
 
@@ -53,7 +49,6 @@ Claude crée automatiquement la branche `feat/add-jwt-auth`, commit au format co
 /plan "fix: le login timeout après 30s au lieu de 5min"
 /do
 /review
-/git --commit
 ```
 
 Branche `fix/login-timeout`, commit `fix(auth): increase login timeout to 5 minutes`.

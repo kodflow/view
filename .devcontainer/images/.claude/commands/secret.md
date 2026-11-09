@@ -508,20 +508,6 @@ init_integration:
   report_section: "1Password Secrets"
 ```
 
-### From /git (pre-commit)
-
-```yaml
-git_integration:
-  phase: "Phase 3 (Parallelize)"
-  agent: "secret-scan"
-  check:
-    - "Scan git diff --cached for secret patterns"
-    - "Patterns: ghp_, glpat-, sk-, pk_, postgres://, mysql://, mongodb://"
-    - "If found: WARN (do not block)"
-    - "Suggest: /secret --push <key>=<detected_value>"
-  behavior: "WARNING only, does NOT block the commit"
-```
-
 ### From /do
 
 ```yaml

@@ -90,4 +90,4 @@ sequenceDiagram
 | **GitLab** | Gestion des MRs, pipelines via MCP | `GITLAB_TOKEN` |
 | **Playwright** | Automatisation navigateur, tests E2E | Aucune |
 
-**Règle MCP-first** : les commandes utilisent toujours les outils MCP avant les CLI. Exemple : `/git --pr` utilise `mcp__github__create_pull_request` au lieu de `gh pr create`.
+**Règle MCP-first** : les commandes utilisent toujours les outils MCP avant les CLI. Exemple : l'ouverture d'une PR utilise `mcp__github__create_pull_request` au lieu de `gh pr create`.
