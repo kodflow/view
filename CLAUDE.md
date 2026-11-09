@@ -30,8 +30,8 @@ Universal DevContainer shell providing cutting-edge AI agents, skills, and workf
 ## How to Work
 
 1. **New project**: `/init` → conversational discovery → doc generation
-2. **New feature**: `/plan "description"` → planning mode → `/do` → `/git --commit`
-3. **Bug fix**: `/plan "description"` → planning mode → `/do` → `/git --commit`
+2. **New feature**: `/plan "description"` → planning mode → `/do`
+3. **Bug fix**: `/plan "description"` → planning mode → `/do`
 4. **Code review**: `/review` → 5 specialist executors in parallel
 
 Branch conventions: `feat/<desc>` or `fix/<desc>`, commit prefix matches.
@@ -86,7 +86,7 @@ Auto-detected by language marker (`go.mod`, `Cargo.toml`, `package.json`, etc.).
 
 **Path convention:** `<org>/<repo>/<key>` (auto-resolved from git remote)
 **Backend:** 1Password CLI (`op`) with `OP_SERVICE_ACCOUNT_TOKEN`
-**Integration:** `/init` (check), `/git` (scan), `/do` (discover), `/infra` (TF_VAR_*)
+**Integration:** `/init` (check) (scan), `/do` (discover), `/infra` (TF_VAR_*)
 
 ## Documentation Hierarchy
 
@@ -113,7 +113,6 @@ Principle: More detail deeper in tree. Target < 200 lines each.
 | `/plan` | Analyze codebase and design implementation approach |
 | `/do` | Execute approved plans iteratively |
 | `/review` | Code review with 5 specialist agents |
-| `/git` | Conventional commits, branch management |
 | `/search` | Documentation research with official sources |
 | `/docs` | Deep project documentation generation |
 | `/test` | E2E testing with Playwright MCP |

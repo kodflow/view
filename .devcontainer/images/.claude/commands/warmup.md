@@ -101,7 +101,7 @@ Examples:
   /warmup --update --dry-run    Preview changes
 
 Workflow:
-  /warmup → /plan → /do → /git
+  /warmup → /plan → /do
 
 ═══════════════════════════════════════════════════════════════
 ```
@@ -663,7 +663,7 @@ apply_workflow:
     format: "<!-- updated: YYYY-MM-DDTHH:MM:SSZ -->"
     example: "<!-- updated: 2026-02-11T14:30:00Z -->"
     purpose: |
-      Allows /git Phase 3.8 to detect staleness.
+      Lets a later run detect staleness.
       Files updated less than 5 minutes ago are ignored.
 
   validation:
@@ -912,8 +912,6 @@ learn_workflow:
 /do                         # Execute the plan
     ↓
 /warmup --update            # Update documentation
-    ↓
-/git --commit               # Commit changes
 ```
 
 **Integration with other skills:**

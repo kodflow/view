@@ -20,7 +20,7 @@ Ces valeurs sont lues par `postCreate.sh` pour configurer `git config`.
 | `GITHUB_TOKEN` | GitHub MCP (PRs, issues) | [Settings → Developer settings → Fine-grained tokens](https://github.com/settings/tokens?type=beta) |
 | `GITLAB_TOKEN` | GitLab MCP (MRs, pipelines) | [Preferences → Access Tokens](https://gitlab.com/-/user_settings/personal_access_tokens) |
 
-Sans token, le serveur MCP correspondant ne démarre pas. Les commandes (`/review`, `/git`) utilisent alors les CLI (`gh`, `glab`) en fallback.
+Sans token, le serveur MCP correspondant ne démarre pas. Les commandes (`/review`) utilisent alors les CLI (`gh`, `glab`) en fallback.
 
 ### Secrets et VPN (optionnels)
 

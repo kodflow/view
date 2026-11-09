@@ -15,7 +15,7 @@ curl -fsSL https://raw.githubusercontent.com/kodflow/devcontainer-template/main/
 **Ce qui est installé :**
 - ✅ Claude CLI (si pas déjà installé)
 - ✅ 35 agents spécialisés (Go, Python, Rust, Node.js, etc.)
-- ✅ 11 commandes slash (`/git`, `/review`, `/plan`, `/do`, etc.)
+- ✅ 11 commandes slash (`/review`, `/plan`, `/do`, etc.)
 - ✅ 11 scripts de hooks (security, lint, format, test)
 - ✅ 155+ design patterns (GoF, Cloud, DDD, Enterprise)
 - ✅ Outils additionnels (grepai, status-line)

@@ -49,7 +49,7 @@ Updates the DevContainer environment from the official template.
 **Updated components (devcontainer - always):**
 
 - **Hooks** - Claude scripts (format, lint, security, etc.)
-- **Commands** - Slash commands (/git, /search, etc.)
+- **Commands** - Slash commands (/search, etc.)
 - **Agents** - Agent definitions (specialists, executors)
 - **Lifecycle** - Lifecycle hooks (delegation stubs)
 - **Image-hooks** - Hooks embedded in the Docker image (real logic)
@@ -127,7 +127,7 @@ Options:
 
 Components:
   hooks        Claude scripts (format, lint...)
-  commands     Slash commands (/git, /search)
+  commands     Slash commands (/search)
   agents       Agent definitions (specialists)
   lifecycle    Lifecycle hooks (delegation stubs)
   image-hooks  Image-embedded lifecycle hooks

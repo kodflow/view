@@ -13,7 +13,7 @@
 |----------------|-------------|
 | **25 langages** | Python, Go, Rust, Node.js, Java, C/C++, Ruby, PHP, et 17 autres — chacun avec linter, formatter et tests |
 | **79 agents IA** | Spécialistes par langage (26), DevOps (9), OS (22), orchestrateurs et exécuteurs — orchestrés par Claude Code |
-| **16 commandes** | `/plan`, `/do`, `/review`, `/git`, `/test`, `/lint`, `/docs`... couvrent tout le cycle de dev |
+| **16 commandes** | `/plan`, `/do`, `/review`, `/test`, `/lint`, `/docs`... couvrent tout le cycle de dev |
 | **Hooks automatiques** | Format, lint, tests, détection de secrets — déclenchés à chaque édition |
 | **5 serveurs MCP** | GitHub, GitLab, Playwright, grepai, context7 — auth pré-configurée |
 | **VPN intégré** | OpenVPN, WireGuard, IPsec, PPTP — connexion auto au démarrage |
@@ -67,7 +67,6 @@ VS Code ouvre le DevContainer, qui contient tous les outils. Claude Code orchest
     /warmup              # Charger le contexte projet
     /plan "ma feature"   # Planifier l'implémentation
     /do                  # Exécuter le plan
-    /git --commit        # Committer proprement
     ```
 
 ---
